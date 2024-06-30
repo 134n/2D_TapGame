@@ -7,10 +7,12 @@ public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
     [SerializeField] ObjectSpawn objectSpawn;
+
     public void Update()
     {
         MousePoint();
     }
+
     public void MousePoint()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -21,7 +23,7 @@ public class MouseDetection : MonoBehaviour
             if (!hit.collider) return;
             {
                 Destroy(hit.collider.gameObject);
-                objectSpawn.RandomRespawn();
+                objectSpawn.Spawn();
             }
         }
     }
