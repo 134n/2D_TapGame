@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class ObjectSpawn : MonoBehaviour
 {
-    [SerializeField] GameObject purpurePointPrefub;
+    [SerializeField] GameObject purplePointPrefub;
 
     public void Start()
     {
-        RandomRespawn();
+        Spawn();
     }
-    public void RandomRespawn()
-        {
-            Vector3 randomRespawn = new(Random.Range(-3.0f, 3.0f), Random.Range(-3.0f, 3.0f), 0);
-            Instantiate(purpurePointPrefub, randomRespawn, Quaternion.identity);
-        }
+
+    public void Spawn()
+    {
+        Vector3 spawn = new(Random.Range(-3.0f, 3.0f), Random.Range(-3.0f, 3.0f), 0);
+        Instantiate(purplePointPrefub, spawn, Quaternion.identity);
+    }
 }

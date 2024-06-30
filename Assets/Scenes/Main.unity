@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df4044618235640e38bcec5f58d1b529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purpurePointPrefub: {fileID: 3730029249454878295, guid: 8c6964d48fa474e0499eca939ee46d87, type: 3}
+  purplePointPrefub: {fileID: 0}
   cam: {fileID: 519420031}
 --- !u!4 &1461237700
 Transform:
@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894d532e7d1854e09a6e64a8230fc770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purpurePointPrefub: {fileID: 3730029249454878295, guid: 8c6964d48fa474e0499eca939ee46d87, type: 3}
+  purplePointPrefub: {fileID: 3730029249454878295, guid: 8c6964d48fa474e0499eca939ee46d87, type: 3}
 --- !u!114 &1461237702
 MonoBehaviour:
   m_ObjectHideFlags: 0
