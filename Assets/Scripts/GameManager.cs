@@ -2,32 +2,40 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject purpurePointPrefub;
-[SerializeField] Camera cam;
+    [SerializeField] GameObject purplePointPrefub;
+    [SerializeField] Camera cam;
+
     private void Start()
     {
-        ObjectSpawn objectSpawn = new(purpurePointPrefub, cam);
-        objectSpawn.RandomRespawn();
+        ObjectSpawn objectSpawn = new(purplePointPrefub, cam);
+
+        objectSpawn.Spawn();
     }
+
     private void Update()
     {
-        ObjectSpawn objectSpawn = new(purpurePointPrefub, cam);
+        ObjectSpawn objectSpawn = new(purplePointPrefub, cam);
+
         objectSpawn.MouseDetection();
     }
+
     private class ObjectSpawn
     {
-        private readonly GameObject purpurePointPrefub;
+        private readonly GameObject purplePointPrefub;
         private readonly Camera cam;
-        public ObjectSpawn(GameObject purpurePointPrefub, Camera cam)
+
+        public ObjectSpawn(GameObject purplePointPrefub, Camera cam)
         {
-            this.purpurePointPrefub = purpurePointPrefub;
+            this.purplePointPrefub = purplePointPrefub;
             this.cam = cam;
         }
-        public void RandomRespawn()
+
+        public void Spawn()
         {
-            Vector3 randomRespawn = new(Random.Range(-3.0f, 3.0f), Random.Range(-3.0f, 3.0f), 0);
-            Instantiate(purpurePointPrefub, randomRespawn, Quaternion.identity);
+            Vector3 spawn = new(Random.Range(-3.0f, 3.0f), Random.Range(-3.0f, 3.0f), 0);
+            Instantiate(purplePointPrefub, spawn, Quaternion.identity);
         }
+        
         public void MouseDetection()
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -38,7 +46,7 @@ public class GameManager : MonoBehaviour
                 if (!hit.collider) return;
                 {
                     Destroy(hit.collider.gameObject);
-                    RandomRespawn();
+                    Spawn();
                 }
             }
         }
