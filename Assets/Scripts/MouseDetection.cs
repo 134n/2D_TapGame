@@ -1,19 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    [SerializeField] ObjectSpawn objectSpawn;
+    private bool isClickedObject;
+    private GameObject hitObject;
 
     public void Update()
     {
-        MousePoint();
+        IsClickedObject();
+        PassClickedObjectDate();
     }
 
-    public void MousePoint()
+    public void IsClickedObject()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
@@ -22,9 +21,15 @@ public class MouseDetection : MonoBehaviour
         {
             if (!hit.collider) return;
             {
-                Destroy(hit.collider.gameObject);
-                objectSpawn.Spawn();
+                isClickedObject = true;
+                hitObject = hit.collider.gameObject;
             }
         }
+    }
+
+    public void PassClickedObjectDate()
+    {
+        TouchObjectGenerator touchObjectGenerator = GetComponent<TouchObjectGenerator>();
+        touchObjectGenerator.ReGenerateObject(isClickedObject,hitObject);
     }
 }
