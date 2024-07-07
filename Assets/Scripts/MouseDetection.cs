@@ -5,31 +5,62 @@ public class MouseDetection : MonoBehaviour
     [SerializeField] Camera cam;
     private bool isClickedObject;
     private GameObject hitObject;
+    private TouchObjectGenerator touchObjectGenerator;
+    private RaycastHit2D raycastHitObject;
+
+    public void Start()
+    {
+        touchObjectGenerator = GetComponent<TouchObjectGenerator>();
+    }
 
     public void Update()
     {
+        RayCastHitObject();
         IsClickedObject();
-        PassClickedObjectDate();
+        ClickedHitObject();
+        SetClickedObjectDataToTouchObjectGenerator();
     }
 
-    public void IsClickedObject()
+    private RaycastHit2D RayCastHitObject()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+        raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
 
-        if (!Input.GetMouseButtonDown(0)) return;
-        {
-            if (!hit.collider) return;
-            {
-                isClickedObject = true;
-                hitObject = hit.collider.gameObject;
-            }
-        }
+        return raycastHitObject;
     }
 
-    public void PassClickedObjectDate()
+    private bool IsClickedObject()
     {
-        TouchObjectGenerator touchObjectGenerator = GetComponent<TouchObjectGenerator>();
-        touchObjectGenerator.ReGenerateObject(isClickedObject,hitObject);
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (raycastHitObject.collider)
+            {
+                isClickedObject = true;
+            }
+        }
+        return isClickedObject;
+    }
+
+    private GameObject ClickedHitObject()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (raycastHitObject.collider)
+            {
+                hitObject = raycastHitObject.collider.gameObject;
+            }
+        }
+        return hitObject;
+    }
+
+    private void SetClickedObjectDataToTouchObjectGenerator()
+    {
+        if (!hitObject) return;
+        if (!isClickedObject) return;
+
+        touchObjectGenerator.RegenerateObject(isClickedObject, hitObject);
+
+        isClickedObject = false;
+        hitObject = null;
     }
 }
