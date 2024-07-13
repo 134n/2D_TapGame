@@ -3,10 +3,8 @@ using UnityEngine;
 public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    private bool isClickedObject;
     private GameObject hitObject;
     private TouchObjectGenerator touchObjectGenerator;
-    private RaycastHit2D raycastHitObject;
 
     public void Start()
     {
@@ -15,52 +13,29 @@ public class MouseDetection : MonoBehaviour
 
     public void Update()
     {
-        RayCastHitObject();
-        IsClickedObject();
-        ClickedHitObject();
-        SetClickedObjectDataToTouchObjectGenerator();
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out var purpleObject);
+        if (!isClickedPurpleObject) return;
+        
+        RegenerateObject(purpleObject);
     }
 
-    private RaycastHit2D RayCastHitObject()
+    private bool TryGetPurpleObjectByRaycast(out GameObject purpleObject)
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+        purpleObject = null;
 
-        return raycastHitObject;
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+        var raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+
+        if (!raycastHitObject) return false;
+
+        purpleObject = raycastHitObject.collider.gameObject;
+        return true;
     }
 
-    private bool IsClickedObject()
+    private void RegenerateObject(GameObject purpleObject)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (raycastHitObject.collider)
-            {
-                isClickedObject = true;
-            }
-        }
-        return isClickedObject;
-    }
-
-    private GameObject ClickedHitObject()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (raycastHitObject.collider)
-            {
-                hitObject = raycastHitObject.collider.gameObject;
-            }
-        }
-        return hitObject;
-    }
-
-    private void SetClickedObjectDataToTouchObjectGenerator()
-    {
-        if (!hitObject) return;
-        if (!isClickedObject) return;
-
-        touchObjectGenerator.RegenerateObject(isClickedObject, hitObject);
-
-        isClickedObject = false;
-        hitObject = null;
+        touchObjectGenerator.RegenerateObject(purpleObject);
     }
 }
