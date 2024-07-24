@@ -15,12 +15,8 @@ public class TouchObjectGenerator : MonoBehaviour
         Instantiate(purplePointPrefab, spawn, Quaternion.identity);
     }
 
-    public void RegenerateObject(bool isClickedObject, GameObject hitObject)
+    public void RegenerateObject(GameObject hitObject)
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-        if (!hitObject) return;
-        if (!isClickedObject) return;
-
         Destroy(hitObject);
         GenerateObject();
     }
