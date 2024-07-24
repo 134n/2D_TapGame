@@ -3,6 +3,8 @@ using UnityEngine;
 public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
+    private bool isClickedObject;
+    private GameObject hitObject;
     private TouchObjectGenerator touchObjectGenerator;
     private RaycastHit2D raycastHitObject;
 
@@ -13,43 +15,18 @@ public class MouseDetection : MonoBehaviour
 
     public void Update()
     {
-        // if (!hitObject) return;
-        // if (!isClickedObject) return;
-
-        // RayCastHitObject();
-        // IsClickedObject();
-        // ClickedHitObject();
-        // SetClickedObjectDataToTouchObjectGenerator();
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out var purpleObject);
-        if (!isClickedPurpleObject) return;
-        
-        RegenerateObject(purpleObject);
+        RayCastHitObject();
+        IsClickedObject();
+        ClickedHitObject();
+        SetClickedObjectDataToTouchObjectGenerator();
     }
 
-    private bool TryGetPurpleObjectByRaycast(out GameObject purpleObject)
-    {
-        purpleObject = null;
-
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
-
-        if (!raycastHitObject) return false;
-
-        purpleObject = raycastHitObject.collider.gameObject;
-        return true;
-    }
-
-    private void RegenerateObject(GameObject purpleObject)
-    {
-        touchObjectGenerator.RegenerateObject(purpleObject);
-    }
-
-    /*private void RayCastHitObject()
+    private RaycastHit2D RayCastHitObject()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+
+        return raycastHitObject;
     }
 
     private bool IsClickedObject()
@@ -57,14 +34,14 @@ public class MouseDetection : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if (raycastHitObject.collider)
-            {  
-                
+            {
+                isClickedObject = true;
             }
         }
         return isClickedObject;
     }
 
-    private void ClickedHitObject()
+    private GameObject ClickedHitObject()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,13 +50,17 @@ public class MouseDetection : MonoBehaviour
                 hitObject = raycastHitObject.collider.gameObject;
             }
         }
+        return hitObject;
     }
 
     private void SetClickedObjectDataToTouchObjectGenerator()
     {
-        touchObjectGenerator.RegenerateObject(hitObject);
+        if (!hitObject) return;
+        if (!isClickedObject) return;
+
+        touchObjectGenerator.RegenerateObject(isClickedObject, hitObject);
 
         isClickedObject = false;
         hitObject = null;
-    }*/
+    }
 }
