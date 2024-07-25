@@ -1,12 +1,17 @@
 using UnityEngine;
+using UniRx;
 
 public class TouchObjectGenerator : MonoBehaviour
 {
+    [SerializeField] MouseDetection mouseDetection;
     [SerializeField] GameObject purplePointPrefab;
 
     public void Start()
     {
         GenerateObject();
+
+        mouseDetection.PurpleObjectObservable
+        .Subscribe(hitObject => RegenerateObject(hitObject));
     }
 
     private void GenerateObject()
@@ -15,7 +20,7 @@ public class TouchObjectGenerator : MonoBehaviour
         Instantiate(purplePointPrefab, spawn, Quaternion.identity);
     }
 
-    public void RegenerateObject(GameObject hitObject)
+    private void RegenerateObject(GameObject hitObject)
     {
         Destroy(hitObject);
         GenerateObject();

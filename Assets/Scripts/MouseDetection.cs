@@ -1,41 +1,39 @@
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
+using System;
 
 public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    
-    private TouchObjectGenerator touchObjectGenerator;
+
+    private readonly Subject<GameObject> purpleObjectSubject = new();
+
+    public IObservable<GameObject> PurpleObjectObservable
+    {
+        get { return purpleObjectSubject; }
+    }
 
     public void Start()
     {
-        touchObjectGenerator = GetComponent<TouchObjectGenerator>();
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonDown(0))
+            .Subscribe(_ =>
+            {
+                bool isClickedPurpleObject = SetPurpleObjectRaycastToRegenerateObject();
+                if (!isClickedPurpleObject) return;
+            });
     }
 
-    public void Update()
+    private bool SetPurpleObjectRaycastToRegenerateObject()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out var purpleObject);
-        if (!isClickedPurpleObject) return;
-        
-        RegenerateObject(purpleObject);
-    }
-
-    private bool TryGetPurpleObjectByRaycast(out GameObject purpleObject)
-    {
-        purpleObject = null;
-
-        var ray = cam.ScreenPointToRay(Input.mousePosition);
-        var raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
 
         if (!raycastHitObject) return false;
 
-        purpleObject = raycastHitObject.collider.gameObject;
-        return true;
-    }
+        purpleObjectSubject.OnNext(raycastHitObject.collider.gameObject);
 
-    private void RegenerateObject(GameObject purpleObject)
-    {
-        touchObjectGenerator.RegenerateObject(purpleObject);
+        return true;
     }
 }
