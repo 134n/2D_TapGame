@@ -265,4 +265,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc00bd4a96b514234abf66fdebe1fd0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseDetection: {fileID: 1461237702}
   purplePointPrefab: {fileID: 3730029249454878295, guid: 8c6964d48fa474e0499eca939ee46d87, type: 3}
