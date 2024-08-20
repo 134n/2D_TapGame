@@ -9,10 +9,7 @@ public class MouseDetection : MonoBehaviour
 
     private readonly Subject<GameObject> purpleObjectSubject = new();
 
-    public IObservable<GameObject> PurpleObjectObservable
-    {
-        get { return purpleObjectSubject; }
-    }
+    public IObservable<GameObject> OnClickedPurpleObject => purpleObjectSubject;
 
     public void Start()
     {
@@ -20,19 +17,24 @@ public class MouseDetection : MonoBehaviour
             .Where(_ => Input.GetMouseButtonDown(0))
             .Subscribe(_ =>
             {
-                bool isClickedPurpleObject = SetPurpleObjectRaycastToRegenerateObject();
-                if (!isClickedPurpleObject) return;
-            });
+                var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out GameObject purpleObject);
+                if(!isClickedPurpleObject) return;
+                
+                purpleObjectSubject.OnNext(purpleObject);
+            })
+            .AddTo(this);
     }
 
-    private bool SetPurpleObjectRaycastToRegenerateObject()
+    private bool TryGetPurpleObjectByRaycast(out GameObject purpleObject)
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
+        purpleObject = null;
+
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+        var raycastHitObject = Physics2D.Raycast((Vector2)ray.origin, (Vector2)ray.direction, 10f);
 
         if (!raycastHitObject) return false;
 
-        purpleObjectSubject.OnNext(raycastHitObject.collider.gameObject);
+        purpleObject = raycastHitObject.collider.gameObject;
 
         return true;
     }

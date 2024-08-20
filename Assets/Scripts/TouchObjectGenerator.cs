@@ -10,8 +10,8 @@ public class TouchObjectGenerator : MonoBehaviour
     {
         GenerateObject();
 
-        mouseDetection.PurpleObjectObservable
-        .Subscribe(hitObject => RegenerateObject(hitObject));
+        mouseDetection.OnClickedPurpleObject
+            .Subscribe(RegenerateObject);
     }
 
     private void GenerateObject()
