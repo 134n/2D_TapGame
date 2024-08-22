@@ -1,24 +1,28 @@
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
+using System;
 
 public class MouseDetection : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    
-    private TouchObjectGenerator touchObjectGenerator;
+
+    private readonly Subject<GameObject> purpleObjectSubject = new();
+
+    public IObservable<GameObject> OnClickedPurpleObject => purpleObjectSubject;
 
     public void Start()
     {
-        touchObjectGenerator = GetComponent<TouchObjectGenerator>();
-    }
-
-    public void Update()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out var purpleObject);
-        if (!isClickedPurpleObject) return;
-        
-        RegenerateObject(purpleObject);
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetMouseButtonDown(0))
+            .Subscribe(_ =>
+            {
+                var isClickedPurpleObject = TryGetPurpleObjectByRaycast(out GameObject purpleObject);
+                if(!isClickedPurpleObject) return;
+                
+                purpleObjectSubject.OnNext(purpleObject);
+            })
+            .AddTo(this);
     }
 
     private bool TryGetPurpleObjectByRaycast(out GameObject purpleObject)
@@ -31,11 +35,7 @@ public class MouseDetection : MonoBehaviour
         if (!raycastHitObject) return false;
 
         purpleObject = raycastHitObject.collider.gameObject;
-        return true;
-    }
 
-    private void RegenerateObject(GameObject purpleObject)
-    {
-        touchObjectGenerator.RegenerateObject(purpleObject);
+        return true;
     }
 }
