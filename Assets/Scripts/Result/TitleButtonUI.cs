@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TitleButton : MonoBehaviour
+public class TitleButtonUI : MonoBehaviour
 {
     [SerializeField] private Button Title;
 
@@ -12,6 +12,5 @@ public class TitleButton : MonoBehaviour
         Title.OnClickAsObservable()
             .Subscribe(_ => { SceneManager.LoadScene("Title"); })
             .AddTo(this);
-
     }
 }
