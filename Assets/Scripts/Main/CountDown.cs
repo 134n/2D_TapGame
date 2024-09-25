@@ -1,26 +1,20 @@
-using System;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UniRx;
+using UniRx.Triggers;
 
 public class CountDown : MonoBehaviour
 {
     private float Count = 10;
-
     private const string LoadResultScene = "Result";
-
-    private void Update()
+    private void Start()
     {
-        Count -= Time.deltaTime;
-
-        if (Count < 0) ToResult();
-
-        Debug.Log((int)Count);
+        this.UpdateAsObservable()
+            .Select(_=>  Count -= Time.deltaTime)
+            .Where(_=> Count < 0)
+            .Subscribe(_ =>{
+                
+            SceneManager.LoadScene(LoadResultScene);
+        });
     }
-
-    /// <summary>
-    /// リザルトに遷移
-    /// </summary>
-    private void ToResult() => SceneManager.LoadScene(LoadResultScene);
 }
