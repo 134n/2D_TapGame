@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class TitleButtonUI : MonoBehaviour
 {
-    [SerializeField] private Button Title;
+    [SerializeField] private Button titleButton;
 
     private const string LoadTitleScene = "Title";
 
     private void Start()
     {
-        Title.OnClickAsObservable()
+        titleButton.OnClickAsObservable()
             .Subscribe(_ => { SceneManager.LoadScene(LoadTitleScene); })
             .AddTo(this);
     }
