@@ -6,7 +6,9 @@ using UniRx.Triggers;
 public class CountDown : MonoBehaviour
 {
     private float Count = 10;
+
     private const string LoadResultScene = "Result";
+    
     private void Start()
     {
         this.UpdateAsObservable()
