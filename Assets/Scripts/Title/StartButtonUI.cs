@@ -10,7 +10,7 @@ public class StartButtonUI : MonoBehaviour
 
     [SerializeField] private StartButtonSE startButtonSE;
 
-    private const string loadMainScene = "Main";
+    private const string LoadMainScene = "Main";
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class StartButtonUI : MonoBehaviour
             .Subscribe(async _ =>
             {
                 await startButtonSE.WaitForButtonSoundToPlay(token);
-                SceneManager.LoadScene(loadMainScene);
+                SceneManager.LoadScene(LoadMainScene);
             })
             .AddTo(this);
     }
