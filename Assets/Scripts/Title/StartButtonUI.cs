@@ -19,6 +19,7 @@ public class StartButtonUI : MonoBehaviour
         startButton.OnClickAsObservable()
             .Subscribe(async _ =>
             {
+                startButtonSE.StartButtonSoundToPlay();
                 await startButtonSE.WaitForButtonSoundToPlay(token);
                 SceneManager.LoadScene(MainSceneName);
             })

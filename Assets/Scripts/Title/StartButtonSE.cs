@@ -6,9 +6,13 @@ public class StartButtonSE : MonoBehaviour
 {
     [SerializeField] private AudioSource startButtonAudioSource;
 
-    public async UniTask WaitForButtonSoundToPlay(CancellationToken token)
+    public void StartButtonSoundToPlay()
     {
         startButtonAudioSource.Play();
+    }
+    
+    public async UniTask WaitForButtonSoundToPlay(CancellationToken token)
+    {
         await UniTask.WaitUntil(() => !startButtonAudioSource.isPlaying,cancellationToken:token);
     }
 }
