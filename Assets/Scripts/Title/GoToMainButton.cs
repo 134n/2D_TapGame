@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GoToMainButton : MonoBehaviour
+public class StartButtonUI : MonoBehaviour
 {
     [SerializeField] private Button startButton;
 
