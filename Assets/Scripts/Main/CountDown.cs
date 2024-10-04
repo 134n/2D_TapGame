@@ -14,10 +14,7 @@ public class CountDown : MonoBehaviour
         this.UpdateAsObservable()
             .Select(_=>  Count -= Time.deltaTime)
             .Where(_=> Count < 0)
-            .Subscribe(_ =>{
-
-            SceneManager.LoadScene(ResultSceneName);
-        })
-        .AddTo(this);
+            .Subscribe(_ =>SceneManager.LoadScene(ResultSceneName))
+            .AddTo(this);
     }
 }
