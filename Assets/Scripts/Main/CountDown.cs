@@ -7,7 +7,7 @@ public class CountDown : MonoBehaviour
 {
     private float Count = 10;
 
-    private const string LoadResultScene = "Result";
+    private const string ResultSceneName = "Result";
     
     private void Start()
     {
@@ -16,7 +16,7 @@ public class CountDown : MonoBehaviour
             .Where(_=> Count < 0)
             .Subscribe(_ =>{
 
-            SceneManager.LoadScene(LoadResultScene);
+            SceneManager.LoadScene(ResultSceneName);
         })
         .AddTo(this);
     }
