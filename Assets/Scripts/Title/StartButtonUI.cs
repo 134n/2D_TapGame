@@ -2,17 +2,27 @@ using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UniRx.Async;
 
 public class GoToMainButton : MonoBehaviour
 {
     [SerializeField] private Button startButton;
 
-    private const string LoadMainScene = "Main";
+    [SerializeField] private StartButtonSE startButtonSE;
+
+    private const string MainSceneName = "Main";
 
     private void Start()
     {
+        var token = this.GetCancellationTokenOnDestroy();
+
         startButton.OnClickAsObservable()
-            .Subscribe(_ => { SceneManager.LoadScene(LoadMainScene); })
+            .Subscribe(async _ =>
+            {
+                startButtonSE.StartButtonSoundToPlay();
+                await startButtonSE.WaitForButtonSoundToPlay(token);
+                SceneManager.LoadScene(MainSceneName);
+            })
             .AddTo(this);
     }
 }
