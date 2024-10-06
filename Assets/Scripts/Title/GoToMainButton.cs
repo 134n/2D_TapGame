@@ -7,12 +7,12 @@ public class StartButtonUI : MonoBehaviour
 {
     [SerializeField] private Button startButton;
 
-    private const string LoadMainScene = "Main";
+    private const string MainSceneName = "Main";
 
     private void Start()
     {
         startButton.OnClickAsObservable()
-            .Subscribe(_ => { SceneManager.LoadScene(LoadMainScene); })
+            .Subscribe(_ => { SceneManager.LoadScene(MainSceneName); })
             .AddTo(this);
     }
 }
