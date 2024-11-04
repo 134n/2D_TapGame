@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class TitleButtonUI : MonoBehaviour
+public class GoToTitleButton : MonoBehaviour
 {
     [SerializeField] private Button titleButton;
 
